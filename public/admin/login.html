@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Studio login — Meher Kapoor Makeup</title>
+<link rel="stylesheet" href="/css/style.css" />
+</head>
+<body>
+
+<nav class="nav">
+  <div class="wrap">
+    <a href="/" class="brand">Meher Kapoor</a>
+    <div class="nav-actions"><a href="/" class="btn btn-ghost">Back to site</a></div>
+  </div>
+</nav>
+
+<div class="auth-shell">
+  <div class="auth-card">
+    <h1>Studio login</h1>
+    <p class="sub">Admin access only — manage your portfolio and booking requests.</p>
+    <form id="adminLoginForm">
+      <div class="field">
+        <label for="email">Email</label>
+        <input type="email" id="email" name="email" required />
+      </div>
+      <div class="field">
+        <label for="password">Password</label>
+        <input type="password" id="password" name="password" required />
+      </div>
+      <button type="submit" class="btn btn-primary" style="width:100%; justify-content:center;">Log in</button>
+      <p class="auth-error" id="loginError"></p>
+    </form>
+  </div>
+</div>
+
+<script src="/js/auth.js"></script>
+<script>
+  document.getElementById('adminLoginForm').addEventListener('submit', async (e) => {
+    e.preventDefault();
+    const errorEl = document.getElementById('loginError');
+    errorEl.classList.remove('show');
+
+    const payload = {
+      email: document.getElementById('email').value,
+      password: document.getElementById('password').value,
+    };
+
+    try {
+      const { token, user } = await Auth.apiFetch('/api/auth/login', {
+        method: 'POST',
+        body: JSON.stringify(payload),
+      });
+      if (user.role !== 'admin') {
+        errorEl.textContent = 'This login is for the studio admin account only.';
+        errorEl.classList.add('show');
+        return;
+      }
+      Auth.setSession(token, user);
+      window.location.href = '/admin/dashboard.html';
+    } catch (err) {
+      errorEl.textContent = err.message;
+      errorEl.classList.add('show');
+    }
+  });
+</script>
+</body>
+</html>

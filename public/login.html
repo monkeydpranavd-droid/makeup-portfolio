@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Log in — Meher Kapoor Makeup</title>
+<link rel="stylesheet" href="/css/style.css" />
+</head>
+<body>
+
+<nav class="nav">
+  <div class="wrap">
+    <a href="/" class="brand">Meher Kapoor</a>
+    <div class="nav-actions"><a href="/signup.html" class="btn btn-ghost">Create account</a></div>
+  </div>
+</nav>
+
+<div class="auth-shell">
+  <div class="auth-card">
+    <h1>Welcome back</h1>
+    <p class="sub">Log in to save your favorite looks and track your booking.</p>
+    <form id="loginForm">
+      <div class="field">
+        <label for="email">Email</label>
+        <input type="email" id="email" name="email" required />
+      </div>
+      <div class="field">
+        <label for="password">Password</label>
+        <input type="password" id="password" name="password" required />
+      </div>
+      <button type="submit" class="btn btn-primary" style="width:100%; justify-content:center;">Log in</button>
+      <p class="auth-error" id="loginError"></p>
+    </form>
+    <p class="auth-switch">New here? <a href="/signup.html">Create an account</a></p>
+  </div>
+</div>
+
+<script src="/js/auth.js"></script>
+<script>
+  document.getElementById('loginForm').addEventListener('submit', async (e) => {
+    e.preventDefault();
+    const errorEl = document.getElementById('loginError');
+    errorEl.classList.remove('show');
+
+    const payload = {
+      email: document.getElementById('email').value,
+      password: document.getElementById('password').value,
+    };
+
+    try {
+      const { token, user } = await Auth.apiFetch('/api/auth/login', {
+        method: 'POST',
+        body: JSON.stringify(payload),
+      });
+      Auth.setSession(token, user);
+      const params = new URLSearchParams(window.location.search);
+      window.location.href = user.role === 'admin' ? '/admin/dashboard.html' : (params.get('next') || '/');
+    } catch (err) {
+      errorEl.textContent = err.message;
+      errorEl.classList.add('show');
+    }
+  });
+</script>
+</body>
+</html>

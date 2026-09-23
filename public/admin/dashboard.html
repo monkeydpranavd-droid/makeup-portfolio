@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Studio dashboard — Meher Kapoor Makeup</title>
+<link rel="stylesheet" href="/css/admin.css" />
+</head>
+<body>
+
+<div class="admin-shell">
+  <aside class="admin-sidebar">
+    <a href="/" class="brand">Meher Kapoor</a>
+    <ul class="admin-nav">
+      <li><button data-panel="gallery" class="active">Gallery</button></li>
+      <li><button data-panel="bookings">Bookings</button></li>
+    </ul>
+    <button class="btn btn-ghost logout" id="logoutBtn" type="button">Log out</button>
+  </aside>
+
+  <main class="admin-main">
+    <!-- Gallery panel -->
+    <section class="admin-panel active" id="panel-gallery">
+      <div class="admin-header">
+        <div>
+          <h1>Portfolio gallery</h1>
+          <p>Upload new looks and manage what visitors see on your site.</p>
+        </div>
+      </div>
+
+      <div class="stat-row" id="galleryStats"></div>
+
+      <div class="upload-card">
+        <h2>Add a new look</h2>
+        <form id="uploadForm">
+          <label class="dropzone" id="dropzone">
+            <img class="preview" id="preview" alt="" />
+            <span id="dropzoneText">Drag an image here, or click to choose a file (JPG, PNG, WEBP — up to 8MB)</span>
+            <input type="file" id="imageInput" name="image" accept="image/jpeg,image/png,image/webp,image/gif" required />
+          </label>
+          <div class="upload-row">
+            <div class="field">
+              <label for="title">Title</label>
+              <input type="text" id="title" name="title" placeholder="e.g. Autumn bridal edit" required />
+            </div>
+            <div class="field">
+              <label for="category">Category</label>
+              <select id="category" name="category">
+                <option value="bridal">Bridal</option>
+                <option value="editorial">Editorial</option>
+                <option value="glam">Party &amp; night glam</option>
+                <option value="natural">Everyday natural</option>
+              </select>
+            </div>
+          </div>
+          <div class="field">
+            <label for="description">Notes (optional)</label>
+            <input type="text" id="description" name="description" placeholder="Internal note about this look" />
+          </div>
+          <button type="submit" class="btn btn-primary" id="uploadBtn">Upload look</button>
+        </form>
+      </div>
+
+      <div class="admin-gallery" id="adminGallery"></div>
+    </section>
+
+    <!-- Bookings panel -->
+    <section class="admin-panel" id="panel-bookings">
+      <div class="admin-header">
+        <div>
+          <h1>Booking requests</h1>
+          <p>Everything submitted through your site's booking form.</p>
+        </div>
+      </div>
+      <div class="table-card">
+        <table>
+          <thead>
+            <tr>
+              <th>Client</th>
+              <th>Service</th>
+              <th>Event date</th>
+              <th>Contact</th>
+              <th>Message</th>
+              <th>Status</th>
+            </tr>
+          </thead>
+          <tbody id="bookingsBody">
+            <tr class="empty-row"><td colspan="6">Loading…</td></tr>
+          </tbody>
+        </table>
+      </div>
+    </section>
+  </main>
+</div>
+
+<div class="toast" id="toast"></div>
+
+<script src="/js/auth.js"></script>
+<script src="/js/admin.js"></script>
+</body>
+</html>

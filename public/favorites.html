@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>My favorites — Meher Kapoor Makeup</title>
+<link rel="stylesheet" href="/css/style.css" />
+</head>
+<body>
+
+<nav class="nav">
+  <div class="wrap">
+    <a href="/" class="brand">Meher Kapoor</a>
+    <div class="nav-actions" id="navAuthSlot"></div>
+  </div>
+</nav>
+
+<section>
+  <div class="wrap">
+    <div class="section-head">
+      <div>
+        <h2>Your saved looks</h2>
+        <p>Everything you've favorited from the portfolio, in one place.</p>
+      </div>
+    </div>
+    <div class="fav-grid gallery-grid" id="favGrid">
+      <p class="gallery-empty">Loading…</p>
+    </div>
+  </div>
+</section>
+
+<script src="/js/auth.js"></script>
+<script>
+  document.addEventListener('DOMContentLoaded', async () => {
+    renderNavAuth();
+
+    if (!Auth.isLoggedIn()) {
+      window.location.href = '/login.html?next=/favorites.html';
+      return;
+    }
+
+    const grid = document.getElementById('favGrid');
+    try {
+      const { favorites } = await Auth.apiFetch('/api/favorites');
+      if (favorites.length === 0) {
+        grid.innerHTML = `<p class="gallery-empty">No favorites yet — head to the <a href="/#gallery">portfolio</a> and tap the heart on looks you love.</p>`;
+        return;
+      }
+      grid.innerHTML = favorites
+        .map(
+          (img) => `
+        <div class="gallery-item in-view">
+          <img src="/uploads/${img.filename}" alt="${img.title}" />
+          <button class="fav-btn active" data-id="${img.id}" title="Remove from favorites">
+            <svg viewBox="0 0 24 24" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <path d="M12 21s-7.5-4.6-10-9.1C.5 8.4 2.4 5 6 5c2 0 3.4 1.1 4 2.3C10.6 6.1 12 5 14 5c3.6 0 5.5 3.4 4 6.9C19.5 16.4 12 21 12 21z"/>
+            </svg>
+          </button>
+          <div class="gallery-caption">
+            <b>${img.title}</b><span>${img.category}</span>
+          </div>
+        </div>`
+        )
+        .join('');
+
+      grid.querySelectorAll('.fav-btn').forEach((btn) => {
+        btn.addEventListener('click', async () => {
+          try {
+            await Auth.apiFetch(`/api/favorites/${btn.dataset.id}`, { method: 'DELETE' });
+            btn.closest('.gallery-item').remove();
+          } catch (err) {
+            alert(err.message);
+          }
+        });
+      });
+    } catch (err) {
+      grid.innerHTML = `<p class="gallery-empty">Could not load your favorites.</p>`;
+    }
+  });
+</script>
+</body>
+</html>
