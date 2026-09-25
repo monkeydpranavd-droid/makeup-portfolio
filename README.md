@@ -1,4 +1,4 @@
-# Meher Kapoor Makeup — Portfolio Site
+# Rajashree Makeup — Portfolio Site
 
 A glossy, scroll-animated makeup artist portfolio with:
 - A public site (portfolio gallery, services, testimonials, booking form)

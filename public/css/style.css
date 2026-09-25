@@ -440,33 +440,6 @@ section { padding: 90px 0; }
 .form-note.success { color: #3f7a4f; }
 .form-note.error { color: #b13b3b; }
 
-/* ---------- Floating Button ---------- */
-.floating-btn {
-  position: fixed;
-  bottom: 30px;
-  right: 30px;
-  width: 58px;
-  height: 58px;
-  background: linear-gradient(135deg, var(--rose) 0%, var(--rose-deep) 100%);
-  color: #fff;
-  border-radius: 50%;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  box-shadow: 0 10px 24px -8px rgba(143, 79, 90, 0.55);
-  z-index: 50;
-  transition: transform 0.3s ease, box-shadow 0.3s ease;
-  animation: float-btn-anim 3s ease-in-out infinite;
-}
-.floating-btn:hover {
-  transform: translateY(-5px) scale(1.05);
-  box-shadow: 0 14px 28px -8px rgba(143, 79, 90, 0.7);
-}
-@keyframes float-btn-anim {
-  0%, 100% { transform: translateY(0); }
-  50% { transform: translateY(-8px); }
-}
-
 /* ---------- Footer ---------- */
 footer {
   background: var(--ink);
